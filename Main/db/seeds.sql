@@ -1,4 +1,4 @@
-INSERT INTO department(name)
+INSERT INTO department(department_name)
 VALUES
 ('IT'),
 ('Finance & Accounting'),
@@ -18,8 +18,8 @@ VALUES
 
 INSERT INTO employee(first_name,last_name,role_id,manager_id)
 VALUES
-('Mark', 'Miller', 2, 4),
-('Devin', 'Anderson', 1, 1),
+('Mark', 'Miller', 2, null),
+('Devin', 'Anderson', 1, null),
 ('Mary', 'Brown', 4, null),
 ('Ashley', 'Jones', 3, 3),
 ('Tyler', 'Moore', 6, 2),
