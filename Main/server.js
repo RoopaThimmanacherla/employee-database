@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
-const cTable = require('console.table');
+const table = require('console.table');
 
 //connect to database
 const db = mysql.createConnection(
@@ -62,24 +62,45 @@ const viewAllDepartments = () => {
     db.query(sql, (err, rows) => {
         if (err) {
             throw err;
-        } else
+        } else{
             console.table(rows);
             promptUser();
+        }
 
     })
 }
 
 const viewAllRoles = () => {
     const sql = `select role.id,role.title,role.salary,department.department_name from role 
-    INNER JOIN department ON role.deparment_id = department.id`;
+    INNER JOIN department ON role.department_id = department.id`;
     db.query(sql, (err, rows) => {
         if (err) {
             throw err;
-        } else
+        } else{
             console.table(rows);
             promptUser();
+        }
 
     })
 
 }
+ const viewAllEmployees=()=>{
+    const sql= `SELECT employee.id,
+    employee.first_name,employee.last_name,
+     role.id,role.title,role.salary,
+     department.department_name,CONCAT(manager.first_name," ",manager.last_name) AS Manager FROM employee 
+    LEFT JOIN role  ON employee.role_id=role.id
+    LEFT JOIN  department ON role.department_id=department.id
+    LEFT JOIN employee manager ON employee.manager_id =manager.id;`
+
+    db.query(sql,(err,rows)=>{
+        if(err){
+            throw err;
+        }else{
+            console.table(rows);
+            promptUser();
+        }
+    })
+ }
+
 promptUser();

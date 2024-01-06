@@ -5,7 +5,7 @@ VALUES
 ('Sales & Marketing'),
 ('Operations');
 
-INSERT INTO role(title,salary,deparment_id)
+INSERT INTO role(title,salary,department_id)
 VALUES
 ('Full Stack Developer', 80000, 1),
 ('Software Engineer', 120000, 1),
@@ -26,3 +26,5 @@ VALUES
 ('Ana', 'Sanchez', 5, 5),
 ('Lewis', 'Allen', 7, 6),
 ('Katherine', 'Green', 8, 7);
+
+
