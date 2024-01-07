@@ -19,3 +19,14 @@ Please access the link [here](https://drive.google.com/file/d/1pGVyKXEQIndKJO36g
 
 [Link to my github profile](https://github.com/RoopaThimmanacherla/employee-database)
 
+* please refer to the below screenshots for the output in terminal:
+
+![image](https://github.com/RoopaThimmanacherla/employee-database/assets/144958836/4377b741-bc59-4e88-99bb-589fa842c709)
+
+![image](https://github.com/RoopaThimmanacherla/employee-database/assets/144958836/c2346c79-8ed8-40ae-b3f1-b166afd054ac)
+
+![image](https://github.com/RoopaThimmanacherla/employee-database/assets/144958836/1a325421-bea4-4f2b-9bde-50205ca9bead)
+
+![image](https://github.com/RoopaThimmanacherla/employee-database/assets/144958836/731a78e1-4117-4323-98d7-d3cee5c93d79)
+
+
