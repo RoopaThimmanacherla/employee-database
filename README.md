@@ -25,8 +25,9 @@ Please access the link [here](https://drive.google.com/file/d/1pGVyKXEQIndKJO36g
 
 ![image](https://github.com/RoopaThimmanacherla/employee-database/assets/144958836/c2346c79-8ed8-40ae-b3f1-b166afd054ac)
 
-![image](https://github.com/RoopaThimmanacherla/employee-database/assets/144958836/1a325421-bea4-4f2b-9bde-50205ca9bead)
+![image](https://github.com/RoopaThimmanacherla/employee-database/assets/144958836/ef45acc0-6881-46a7-86b1-ab510444f479)
 
-![image](https://github.com/RoopaThimmanacherla/employee-database/assets/144958836/731a78e1-4117-4323-98d7-d3cee5c93d79)
+
+
 
 
