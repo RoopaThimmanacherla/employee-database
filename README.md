@@ -15,7 +15,7 @@ Google,took help from TA,tutor and referred to miniproject.
 
 ## Walkthrough Video
 
-Please access the link [here](https://drive.google.com/) to watch the walkthrough video.
+Please access the link [here](https://drive.google.com/file/d/1pGVyKXEQIndKJO36ggGHb-TbNZtGvLL-/view?usp=sharing) to watch the walkthrough video.
 
 [Link to my github profile](https://github.com/RoopaThimmanacherla/employee-database)
 
