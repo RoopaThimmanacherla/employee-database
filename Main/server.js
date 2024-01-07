@@ -209,7 +209,6 @@ validate: departmentName=>{
                 ])
                 .then((answers)=>{
                     const {department}=answers;
-                    console.log(department);
                     params.push(department);
                     const sql= `INSERT INTO role(title,salary,department_id)
                     values(?,?,?);`
@@ -230,6 +229,67 @@ validate: departmentName=>{
         })
 
     })
+   
+ }
+
+ const updateEmployeerole=()=>{
+const empSql= `select last_name from employee;`
+
+db.query(empSql,(err,result)=>{
+    if(err){
+        throw err;
+    }else{
+        const empArr= result.map(emp=>emp.last_name);
+        inquirer.prompt([
+            {
+                type:'list',
+                name:'employee',
+                message:'select the employee to update the role:',
+                choices:empArr
+            }
+        ])
+
+        .then((answers)=>{
+             const {employee}=answers;
+            const rolesql=`select id,title from role;`
+            db.query(rolesql,(err,result)=>{
+                if(err){
+                    throw err;
+                }else{
+                    console.log(result);
+                    const roleArr=result.map(({id,title})=>({name:title,value:id}));
+
+                    inquirer.prompt([
+                        {
+                            type:'list',
+                            name: 'updatedRole',
+                            message: 'selct the role to update the employee:',
+                            choices: roleArr
+
+                        }
+                    ])
+                    .then(answers=> {
+                        const {updatedRole}=answers;
+                        const params=[updatedRole,employee];
+                            const updateEmpSql=`UPDATE employee SET role_id=? where last_name=?; `
+                            db.query(updateEmpSql,params,(err,result)=>{
+                                if(err){
+                                    throw err;
+                                }else{
+                                    console.log("Employee role hasbeen updated!");
+                                    viewAllEmployees();
+                                    promptUser();
+                                }
+                            })
+
+                    })
+                }
+            })
+        })
+    }
+})
+   
+
    
  }
 
