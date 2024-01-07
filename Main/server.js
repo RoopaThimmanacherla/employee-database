@@ -6,9 +6,8 @@ const table = require('console.table');
 const db = mysql.createConnection(
     {
         host: 'localhost',
-        // MySQL username,
+        // MySQL username,Customer
         user: 'root',
-        // TODO: Add MySQL password here
         password: '',
         database: 'employees_db'
     },
@@ -53,6 +52,9 @@ const promptUser = () => {
                             } else
                                 if (task === 'Update Employee Role') {
                                     updateEmployeerole();
+                                }else
+                                if(task=== 'Add Role'){
+                                    addRole();
                                 }
         });
 }
@@ -64,6 +66,7 @@ const viewAllDepartments = () => {
             throw err;
         } else{
             console.table(rows);
+            console.log(rows);
             promptUser();
         }
 
@@ -85,13 +88,13 @@ const viewAllRoles = () => {
 
 }
  const viewAllEmployees=()=>{
-    const sql= `SELECT employee.id,
-    employee.first_name,employee.last_name,
-     role.id,role.title,role.salary,
-     department.department_name,CONCAT(manager.first_name," ",manager.last_name) AS Manager FROM employee 
-    LEFT JOIN role  ON employee.role_id=role.id
-    LEFT JOIN  department ON role.department_id=department.id
-    LEFT JOIN employee manager ON employee.manager_id =manager.id;`
+    const sql= `SELECT e.id,
+    e.first_name,e.last_name,
+     r.id,r.title,r.salary,
+     d.department_name,CONCAT(manager.first_name," ",manager.last_name) AS Manager FROM employee e
+    LEFT JOIN role r ON e.role_id=r.id
+    LEFT JOIN  department d ON r.department_id=d.id
+    LEFT JOIN employee manager ON e.manager_id =manager.id;`
 
     db.query(sql,(err,rows)=>{
         if(err){
@@ -101,6 +104,125 @@ const viewAllRoles = () => {
             promptUser();
         }
     })
+ }
+
+ const addDepartment=()=>{
+    inquirer.prompt([
+        {
+type:'input',
+name: 'departmentName',
+message:'Please enter departmentName:',
+validate: departmentName=>{
+    if(departmentName){
+        return true;
+    }else{
+        console.log("Please enter a department name");
+        return false;
+    }
+}
+
+
+        },
+    ])
+    .then((answers)=>{
+        const sql =`INSERT INTO department(department_name) values(?);`
+        const {departmentName} = answers;
+        db.query(sql,departmentName,(err,rows)=>{
+            if(err){
+                throw err;
+            }else{
+                console.log(`Added ${departmentName} to departments!`);
+                viewAllDepartments();
+            }
+        })
+    })
+ }
+
+ const addRole=()=>{
+   
+    inquirer.prompt([
+        {
+            type:'input',
+            name:'roleName',
+            message:'Please enter the role name :',
+            validate: roleName=>{
+                if(roleName){
+                    return true;
+                }else{
+                    console.log("Please enter the role name:");
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'input',
+            name:'salary',
+            message:'Please enter the salary for the role:',
+            validate:salary=>{
+                if(salary){
+                    return true;
+                }else{
+                    console.log("Please enter the salary!");
+                    return false;
+    }
+}
+        },
+       
+    ])
+    .then((answers)=>{
+        const {roleName,salary} =answers;
+        const params=[roleName,salary];
+
+        const depQuery = `select department_name from department`;
+    
+        db.query(depQuery,(err,result)=>{
+            if(err){
+                throw err;
+            }else{
+                console.log(result);
+                const depArray= result.map(dep=>dep.department_name);
+                console.log(depArray);
+
+                inquirer.prompt([
+                    
+                        {
+                            type: 'list',
+                            name:'department',
+                            message:'Select the department for the role:',
+                            choices:depArray,
+                            validate: department=>{
+                             if(department){
+                                 if(department){
+                                     return true;
+                 
+                                 }else{
+                                     console.log("Please select the department!");
+                                     return false;
+                                 }
+                             }
+                            }
+                         }
+                    
+                ])
+                .then((answers)=>{
+                    const {department}=answers;
+                    params.push(department);
+                    const sql= `INSERT INTO role(title,salary,department_id)
+                    values(?,?,?)`;
+                    db.query(sql,params,(err,result)=>{
+                        if(err){
+                            throw err;
+                        }else{
+                            console.log(`Added ${roleName} to the role`);
+                        }
+                    })
+                })
+            }
+    
+        })
+
+    })
+   
  }
 
 promptUser();
