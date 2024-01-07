@@ -182,6 +182,7 @@ validate: departmentName=>{
                 console.log(result);
                 const depArray= result.map(dep=>dep.department_name);
                 console.log(depArray);
+        
 
                 inquirer.prompt([
                     
@@ -206,16 +207,26 @@ validate: departmentName=>{
                 ])
                 .then((answers)=>{
                     const {department}=answers;
-                    params.push(department);
-                    const sql= `INSERT INTO role(title,salary,department_id)
-                    values(?,?,?)`;
-                    db.query(sql,params,(err,result)=>{
+                    const depIdQuery=`select id from department where department_name=${department};`
+                    db.query(depIdQuery,(err,results)=>{
                         if(err){
                             throw err;
                         }else{
-                            console.log(`Added ${roleName} to the role`);
+                            console.log(results);
+                            params.push(results);
+
+                            const sql= `INSERT INTO role(title,salary,department_id)
+                            values(?,?,?)`;
+                            db.query(sql,params,(err,result)=>{
+                                if(err){
+                                    throw err;
+                                }else{
+                                    console.log(`Added ${roleName} to the role`);
+                                }
+                            })
                         }
                     })
+                   
                 })
             }
     
