@@ -218,7 +218,6 @@ validate: departmentName=>{
                         }else{
                             console.log("Role hasbeen added");
                             viewAllRoles();
-                            promptUser();
                         }
                     })
                   
@@ -256,7 +255,6 @@ db.query(empSql,(err,result)=>{
                 if(err){
                     throw err;
                 }else{
-                    console.log(result);
                     const roleArr=result.map(({id,title})=>({name:title,value:id}));
 
                     inquirer.prompt([
@@ -278,7 +276,6 @@ db.query(empSql,(err,result)=>{
                                 }else{
                                     console.log("Employee role hasbeen updated!");
                                     viewAllEmployees();
-                                    promptUser();
                                 }
                             })
 
@@ -291,6 +288,113 @@ db.query(empSql,(err,result)=>{
    
 
    
+ }
+
+ const addEmployee=()=>{
+    inquirer.prompt([
+        {
+            type:'input',
+            name:'firstName',
+            messeage:'Enter the employee first name:',
+            validate:firstName=>{
+                if(firstName){
+                    return true;
+                }else{
+                    console.log("please enter the first name!");
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'input',
+            name:'lastName',
+            message:'Enter the last name for the employee:',
+            validate:lastName=>{
+                if(lastName){
+                    return true;
+                }else{
+                    console.log("Please enter the last name:");
+                    return false;
+                }
+            }
+        }
+    ])
+    .then(answers=>{
+        const {firstName,lastName}=answers;
+        const params=[firstName,lastName];
+        const rolesql=`select id,title from role;`
+        db.query(rolesql,(err,results=>{
+            if(err){
+                throw err;
+            }else{
+                const roleArr= results.map(({id,title})=>({name:title,value:id}));
+                inquirer.prompt([
+                    {
+                        type:'list',
+                        name:'ROle',
+                        message:'select the role for the employee:',
+                        choices:roleArr,
+                        validate:role=>{
+                            if(role){
+                                return true;
+                            }else{
+                            console.log("please select the role!");
+                            return false;
+                            }
+                        }
+                    }
+                ])
+                .then(answers=>{
+                    const {Role}=answers;
+                    params.push(Role);
+
+                    const managerSql=`select id,last_name from employee; `
+                    db.query(managerSql,(err,result)=>{
+                        if(err){
+                            throw err;
+                        }else{
+                            const managerArr= result.map(({id,last_name})=>({name:last_name,value:id}));
+                            inquirer.prompt([
+                                {type:'list',
+                                name:'manager',
+                                message:'select the manager for the employee:',
+                                choices:managerArr,
+                                validate:manager=>{
+                                    if(manager){
+                                        return true;
+                                    }else{
+                                        console.log('please enter the manager!');
+                                        return false;
+                                    }
+                                }
+                            }
+                            ])
+                            .then(answers=>{
+                                const{manager}=answers;
+                                params.push(manager);
+
+                                const addEmpSql=`INSERT INTO employee(first_name,last_name,role_id,manager_id)
+                                values(?,?,?,?);`
+
+                                db.query(addEmpSql,params,(err,result)=>{
+                                    if(err){
+                                        throw err;
+                                    }else{
+                                        console.log("Employee added!");
+                                        viewAllEmployees();
+                                    }
+                                })
+                            })
+                        }
+                    })
+                })
+            }
+        }
+            ))
+ 
+
+    })
+
  }
 
 promptUser();
