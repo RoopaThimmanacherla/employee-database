@@ -66,7 +66,6 @@ const viewAllDepartments = () => {
             throw err;
         } else{
             console.table(rows);
-            console.log(rows);
             promptUser();
         }
 
@@ -179,9 +178,7 @@ validate: departmentName=>{
             if(err){
                 throw err;
             }else{
-                console.log(result);
                 const depArray= result.map(({id,department_name})=>({name:department_name,value:id}));
-                console.log(depArray);
         
 
                 inquirer.prompt([
@@ -194,7 +191,6 @@ validate: departmentName=>{
                             validate: department=>{
                              if(department){
                                  if(department){
-                                    console.log(department);
                                      return true;
                                     
                  
@@ -331,7 +327,7 @@ db.query(empSql,(err,result)=>{
                 inquirer.prompt([
                     {
                         type:'list',
-                        name:'ROle',
+                        name:'Role',
                         message:'select the role for the employee:',
                         choices:roleArr,
                         validate:role=>{
