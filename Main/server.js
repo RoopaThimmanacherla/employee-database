@@ -8,7 +8,7 @@ const db = mysql.createConnection(
         host: 'localhost',
         // MySQL username,Customer
         user: 'root',
-        password: '',
+        password: 'Reddy@143',
         database: 'employees_db'
     },
     console.log(`Connected to the employees_db database.`)
@@ -173,14 +173,14 @@ validate: departmentName=>{
         const {roleName,salary} =answers;
         const params=[roleName,salary];
 
-        const depQuery = `select department_name from department`;
+        const depQuery = `select id,department_name from department`;
     
         db.query(depQuery,(err,result)=>{
             if(err){
                 throw err;
             }else{
                 console.log(result);
-                const depArray= result.map(dep=>dep.department_name);
+                const depArray= result.map(({id,department_name})=>({name:department_name,value:id}));
                 console.log(depArray);
         
 
@@ -194,7 +194,9 @@ validate: departmentName=>{
                             validate: department=>{
                              if(department){
                                  if(department){
+                                    console.log(department);
                                      return true;
+                                    
                  
                                  }else{
                                      console.log("Please select the department!");
@@ -207,25 +209,20 @@ validate: departmentName=>{
                 ])
                 .then((answers)=>{
                     const {department}=answers;
-                    const depIdQuery=`select id from department where department_name=${department};`
-                    db.query(depIdQuery,(err,results)=>{
+                    console.log(department);
+                    params.push(department);
+                    const sql= `INSERT INTO role(title,salary,department_id)
+                    values(?,?,?);`
+                    db.query(sql,params,(err,result)=>{
                         if(err){
                             throw err;
                         }else{
-                            console.log(results);
-                            params.push(results);
-
-                            const sql= `INSERT INTO role(title,salary,department_id)
-                            values(?,?,?)`;
-                            db.query(sql,params,(err,result)=>{
-                                if(err){
-                                    throw err;
-                                }else{
-                                    console.log(`Added ${roleName} to the role`);
-                                }
-                            })
+                            console.log("Role hasbeen added");
+                            viewAllRoles();
+                            promptUser();
                         }
                     })
+                  
                    
                 })
             }
