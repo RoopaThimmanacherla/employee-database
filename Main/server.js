@@ -323,7 +323,7 @@ db.query(empSql,(err,result)=>{
         const {firstName,lastName}=answers;
         const params=[firstName,lastName];
         const rolesql=`select id,title from role;`
-        db.query(rolesql,(err,results=>{
+        db.query(rolesql,(err,results)=>{
             if(err){
                 throw err;
             }else{
@@ -390,11 +390,13 @@ db.query(empSql,(err,result)=>{
                 })
             }
         }
-            ))
+            )
+        }
+        )
  
 
-    })
+    }
 
- }
+ 
 
 promptUser();
